@@ -2,11 +2,13 @@ import React, { useEffect } from 'react';
 import { Form, Input, DatePicker, InputNumber, Button, Modal } from 'antd';
 import axios from 'axios';
 import moment from 'moment'
+import{ Spin }from"antd";
 
 const { TextArea } = Input;
 
 const BookForm = ({ onFinish, onCancel, initialData, visible }) => {
     const [form] = Form.useForm();
+    const [loading,setLoading] = React.useState(false)
 
     useEffect(() => {
         if (initialData) {
@@ -19,6 +21,7 @@ const BookForm = ({ onFinish, onCancel, initialData, visible }) => {
 
     const handleSubmit = async (values) => {
         try {
+            setLoading(true)
             if (initialData) {
                 console.log(initialData);
                 await axios.put(`/api/books/${initialData._id}`, values);
@@ -29,6 +32,7 @@ const BookForm = ({ onFinish, onCancel, initialData, visible }) => {
             onFinish();
         } catch (error) {
             console.error('Error:', error);
+            setLoading(false)
         }
     };
 
@@ -61,7 +65,8 @@ const BookForm = ({ onFinish, onCancel, initialData, visible }) => {
                     <Input type='number' />
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" disabled={loading}>
+                        {loading && <Spin/>}
                         {initialData ? 'Update' : 'Add'}
                     </Button>
                 </Form.Item>
