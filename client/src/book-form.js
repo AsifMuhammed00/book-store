@@ -14,7 +14,7 @@ const BookForm = ({ onFinish, onCancel, initialData, visible }) => {
         } else {
             form.resetFields();
         }
-    }, [initialData, form]);
+    }, [initialData, form,visible]);
 
 
     const handleSubmit = async (values) => {
